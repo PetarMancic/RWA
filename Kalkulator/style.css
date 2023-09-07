@@ -1,0 +1,155 @@
+.zaPrikaz
+{
+margin-top: 100px;
+border: 2px solid black;
+}
+.ObrisiNamirnicu
+{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.labelP {
+    display: block; /* Proverite da li je ovo podešeno da omogući prikazivanje */
+    visibility: visible; /* Proverite da li je ovo podešeno da omogući prikazivanje */
+  }
+
+  .zaPrikaz label {
+    display: block;
+    text-align: center;
+  }
+
+  
+    .kontejner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        /* Dodajte druge stilove po potrebi */
+      }
+
+    .prikazHidrata prikazKalorija  {
+        display: block;
+        text-align: left;
+      }
+
+      /* Stil za modalni prozor */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .Dugmici
+  {
+    width:33%;
+    height:35px;
+    margin:3px;
+  }
+  
+  #sveNamirnice
+  {
+    border: 1px solid #888;
+    padding: 20px;
+  }
+
+
+  .label-value-pair {
+    display: flex;
+    flex-direction: column;
+}
+
+.label-value-pair .label {
+    white-space: nowrap;
+}
+.rasiri
+{
+  width: 140px;
+}
+
+.radio-buttons-container {
+  display: flex; /* Postavite elemente unutar kontejnera kao fleksibilne elemente */
+  justify-content: space-between; /* Raspodelite prostor između elemenata */
+  padding: 10px; /* Dodajte unutarnji prostor između kontejnera i elemenata */
+  border: 2px solid #020000; /* Dodajte border kontejneru */
+  width:250px;
+  height:  200px;
+}
+
+
+.radio-buttons-container {
+  background-color: #f0f0f0; /* Boja pozadine kontejnera */
+  padding: 10px; /* Dodajte željeni razmak oko sadržaja */
+  border-radius: 5px; /* Dodajte zaobljenje ivica */
+  display: inline-block; /* Postavite da se kontejner prikazuje u redu */
+}
+
+.radio-buttons-container label {
+  display: block; /* Postavite da svaka radio dugmad bude u novom redu */
+  margin-bottom: 10px; /* Dodajte razmak između radio dugmadi */
+  padding: 5px; /* Dodajte unutarnji prostor oko teksta */
+}
+
+.radio-buttons-container input[type="radio"] {
+  display: none; /* Sakrijte stvarno radio dugme */
+}
+
+.radio-buttons-container label:before {
+  content: "\2022"; /* Dodajte tačkasti marker */
+  color: #007bff; /* Boja markera */
+  font-size: 16px; /* Veličina markera */
+  /* Razmak između markera i teksta */
+}
+
+.radio-buttons-container input[type="radio"]:checked + label:before {
+  color: #28a745; /* Boja markera kada je selektovan */
+}
+
+
+
+.radio-buttons-container {
+  background-color: #f0f0f0;
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+  text-align: center;
+  margin-left: auto; /* Horizontalni margin - ostavlja prostor s desne strane */
+  margin-right: auto; /* Horizontalni margin - ostavlja prostor s leve strane */
+  width: fit-content; /* Postavljanje širine na širinu sadržaja */
+}
+
+.center-container {
+  display: flex;
+  justify-content: center; /* Centriranje po horizontali */
+  align-items: center; /* Centriranje po vertikali */
+  margin-top: 20px;
+}

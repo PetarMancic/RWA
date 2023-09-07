@@ -1,0 +1,22 @@
+<p> Ovo je namirnica</p>
+<p id="receivedValue"></p>
+<script src="./myService.ts"></script>
+
+<script>
+    
+    // Dohvatimo vrednost iz URL parametra
+    const urlParams = new URLSearchParams(window.location.search);
+    const receivedValue = urlParams.get('value');
+    console.log(receivedValue);
+    // Postavimo vrednost u element na stranici
+    const receivedValueElement = document.getElementById('receivedValue');
+
+    receivedValueElement.textContent = `Preneta vrednost: ${receivedValue}`;
+    myServiceInstance.getFood(receivedValue).subscribe( foodData=>
+    {
+        console.log(foodData);
+    },
+    error=>{
+    console.error(error);
+})
+  </script>

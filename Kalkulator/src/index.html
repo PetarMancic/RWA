@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../style.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css">
+    </head>
+
+    <body>
+    <div class="center-container">
+        <div class="radio-buttons-container">
+            <label>
+                <input type="radio" name="hideSection" id="hideSectionRadio" onclick="toggleSection('nutritivneVrednosti')"> Pronađite nutritivne vrednosti namirnica
+            </label>
+            <label>
+                <input type="radio" name="hideSection" id="hideSectionRadioo" onclick="toggleSection('TDEE')"> Izračunajte svoj TDEE
+            </label>
+        </div>
+        </div>
+                
+        <div  class="container d-flex justify-content-center align-items-center ">
+
+        <div id="nutritivneVrednosti"class="zaPrikaz  d-justify-content-center align-items-center" style="display:none; background-color:lightblue ">
+
+        <label for="labelime">Unesite namirnicu   </label>
+        <input type="text" class="labelUnos center-block" name="labelime" style="width:30%; margin: 0 auto;">
+
+
+        <label for="labelGrami">Unesite kolicinu   </label>
+        <input type="text" class="labelGrami form-control-static center-block" name="labelGrami" placeholder="u gramima.. " style="width:30%" > </input>
+
+        
+        
+      
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="label-value-pair rasiri">
+                    <label for="label1">Proteini:</label>
+                    <label type="text" class="prikazProteina form-control-static"></label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="label-value-pair rasiri">
+                    <label for="label2">Ugljeni hidrati:</label>
+                    <label type="text" class="prikazHidrata"></label>
+                </div>
+            </div>
+            <div class="col-md-3 rasiri">
+                <div class="label-value-pair">
+                    <label for="label3">Masti:</label>
+                    <label type="text" class="prikazMasti"></label>
+                </div>
+            </div>
+            <div class="col-md-3 rasiri">
+                <div class="label-value-pair">
+                    <label for="label4">Kalorije:</label>
+                    <label type="text" class="prikazKalorija"></label>
+                </div>
+            </div>
+        </div>
+        
+        
+        <button id="dugmeDodaj" class="Dugmici  btn btn-primary">Dodaj u svesku</button>
+        <button id="dugmeProcitaj"  class="Dugmici btn btn-primary">Procitaj iz sveske </button>
+        <div class="ObrisiNamirnicu">
+        <button id="dugmeObrisiNamirnicu" class="Dugmici btn btn-primary">Obrisi namirnicu </button>
+        <input type="text" id="namirnicaInput" class="Dugmici" placeholder="  Ime namirnice.." />
+        </div>
+        <button id="dugmeObrisiSveIzSveske" class="Dugmici btn btn-primary" >Ocisti celu korpu </button>
+        <button id="obrisiKonzolu" class="Dugmici btn btn-primary"  onclick="dugmeObrisiKonzolu()">Obrisi konzolu </button>
+       
+        <div id="obrisanaPoruka" >Dodali  ste  u svesku </div>
+
+        <button id="dugmeVratiSveNamirnice" class="Dugmici btn btn-primary">Vrati namirnice </button>
+        <title>Prikazivanje ID-eva namirnica</title>
+        <div id="sveNamirnice"></div>
+        <br>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+              <span class="close" onclick="zatvoriModal()">&times;</span>
+              <p>Dodali ste novu namirnicu</p>
+              <button onclick="zatvoriModal()">OK</button>
+            </div>
+          </div>
+          
+          <button id="nextPageButton" class="btn btn-primary" >Otvori Hello World Stranicu</button>
+
+
+          
+
+        <script src="../dist/bundle.js" async defer></script>
+
+    </div   >
+
+    <div id="TDEE"  class="zaPrikaz" style="display: none; background-color:lightblue"> 
+     
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Inline|Ruda" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="../style.css">
+    <title class="justify-content-center align-items-center">TDEE CALCULATOR</title>
+       
+
+    <BR />
+    <BR />
+    <h1 class="tdee-header  d-flex align-items-center justify-content-center">TDEE Calculator </h1>
+    <center>
+      <h2 class="tdee-intro">Use the form below to calculate your <a class="btn heading-link" title="how many calories you burn at rest"><strong>BMR</strong></a> & your <a class="btn heading-link" title="how many calories you burn with exercise taken into account"><strong>TDEE</strong></a></h3>
+    </center>
+    </center>
+    <br /><br />
+    <!-- Form -->
+    <form class="pure-form pure-form-stacked myForm">
+      <fieldset class="field">
+        <legend class="calculate">
+          Calculate Your TDEE By Filling Out The Form Below <i class="fas fa-angle-down"></i>
+        </legend>
+        <div class="pure-g">
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="age">Age</label>
+            <input id="age" class="pure-u-23-24" type="number">
+          </div>
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="weight">Weight</label>
+            <input id="weight" class="pure-u-23-24" type="number" placeholder="kg" step="0.2">
+          </div>
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="activty">Activity Level <i class="far fa-question-circle popup-marker" data-container="body" data-toggle="popover" data-placement="bottom" data-content="<strong>Sedentary</strong>: little to no exercise/desk job<br><strong>Lightly Active</strong>: light exercise 1-3 days/week<br><strong>Moderately Active</strong>: moderate exercise 3-5 days/week<br><strong>Very Active</strong>: heavy exercise 6-7 days/week<br><strong>Extremely Active</strong>: very heavy exercise 2x/day<br>" data-html="true"></i></label>
+            <select id="activity" class="pure-u-23-24">
+              <option>Sedentary</option>
+              <option>Lightly Active</option>
+              <option>Moderately Active</option>
+              <option>Very Active</option>
+              <option>Extremely Active</option>
+            </select>
+          </div>
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="gender">Gender</label>
+            <select id="gender" class="pure-u-23-24">
+              <option>Female</option>
+              <option>Male</option>
+            </select>
+          </div>
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="height">Height - Feet</label>
+            <select id="height-feet" type="text" value="feet" class="pure-u-23-24">
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+            </select>
+          </div>
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="height">Height - Inch</label>
+            <select id="height-inch" type="text" class="pure-u-23-24">
+              <option>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7</option>
+              <option>8</option>
+              <option>9</option>
+              <option>10</option>
+              <option>11</option>
+            </select>
+          </div>
+          <div class="pure-u-1 pure-u-sm-1-3">
+            <label for="breastFeeding">Are you breast feeding? <i class="far fa-question-circle" data-container="body" data-html="true" data-toggle="popover" data-placement="right" data-content="It is recommended that breast feeding women consume <strong>450 more calories</strong> per day."></i></label>
+            <select id="breast-feeding" type="text" class="pure-u-23-24">
+              <option>No</option>
+              <option>Yes</option>
+            </select>
+          </div>
+        </fieldset>
+     
+     
+    </form>
+    <button id="calculate" class="pure-button pure-input-1 pure-button btn-center submit">Calculate</button>
+
+  <!-- loader -->
+  <div id="loading" class="d-flex align-items-center justify-content-center" style="margin-top: 30px;">
+    <img src="slike/calculator.png" class="loading-image  " style="width: 120px; height:120px">
+  </div>
+  <br />
+  <br />
+
+  <!-- Results Card-->
+  <div class="card text-center mx-auto w-75" id="results" style="width: 48rem; border:2px solid #763626">
+    <div class="card-header" style="border-bottom:2px solid #763626; background-color: #336B87;">
+      <h2>Your Results</h2>
+    </div>
+    <div class="card-body">
+      <div class="container-fluid">
+           <div class="row">
+             <!-- bmr results-->
+               <div class="col">
+                <p class="bmr"><i class="fa fa-check-circle" aria-hidden="true"></i></p>
+               </div>
+              <!-- tdee results-->
+               <div class="col">
+                 <p class="tdee"><i class="fa fa-check-circle" aria-hidden="true"></i></p>
+               </div>
+            </div>
+       </div>
+      <p class="card-text">
+        <div class="row secondary-head" style="border-top: 1px solid #763626";>
+          <div class="col">
+            <br />
+            <h3>Calories per day needed to maintain/lose weight  <i class="fas fa-angle-down"></i></h3>
+          </div>
+        </div>
+        <br />
+        <br />
+        <div class="row">
+          <div class="col">
+            <strong><u>To Maintain</u></strong>
+            <p class="maintain"></p>
+          </div>
+          <div class="col">
+            <strong><u>To Lose 1lb/week</u></strong>
+            <p class="lose-1lb"></p>
+          </div>
+          <div class="col">
+            <strong><u>To Lose 1.5lb/week</u></strong>
+            <p class="lose-oneandhalflb"></p>
+          </div>
+          <div class="col">
+            <strong><u>To Lose 2lb/week</u></strong>
+            <p class="lose-2lb"></p>
+          </div>
+        </div>
+    </div>
+    <div class="card-footer text-muted">
+     <p><i class="fa fa-bullhorn" aria-hidden="true"></i>  Females should not go below 1200 cals/day & males should not go below 1500 cals/day.</p>
+   </div>
+  </div>
+    <script src="https://unpkg.com/tippy.js@2.5.4/dist/tippy.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  <script src="index.ts"></script>
+  <script>
+  tippy('.btn');
+  </script>
+
+</div>
+
+</div>
+    </body>
+</html>

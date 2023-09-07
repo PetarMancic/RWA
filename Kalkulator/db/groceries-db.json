@@ -1,0 +1,53 @@
+{
+  "groceries": [
+    {
+      "id": "ovsene",
+      "name": "json-server",
+      "P": 21,
+      "UH": 0,
+      "M": 0,
+      "Kcal": 120
+    }
+  ,
+  {
+    "id": "piletina",
+    "name": "Piletina",
+    "P": "21",
+    "UH": "0",
+    "M": "0",
+    "Kcal": 120
+  },
+  {
+    "id": "pirinac",
+    "name": "Pirinac",
+    "P": "8",
+    "UH": "75",
+    "M": "0",
+    "Kcal": 120
+  }, {
+    "id": "banana",
+    "name": "Banane",
+    "P": "3",
+    "UH": "50",
+    "M": "0",
+    "Kcal": 120
+  },
+  {
+    "id": "jaje",
+    "name": "Jaje",
+    "P": "5",
+    "UH": "0",
+    "M": "30",
+    "Kcal": 120
+  },
+  {
+    "id": "pastrmka",
+    "name": "Pastrmka",
+    "P": "22",
+    "UH": "0",
+    "M": "10",
+    "Kcal": 169
+  }
+]
+ 
+}

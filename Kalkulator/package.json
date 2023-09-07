@@ -1,0 +1,30 @@
+{
+  "name": "kalkulator",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --mode development",
+    "build": "webpack --config webpack.config.js",
+    "watch": "webpack --watch --config webpack.config.js",
+    "api": "json-server  --watch ./db/groceries-db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bootstrap": "^5.2.6",
+    "bootstrap": "^5.3.1",
+    "jquery": "^3.7.1",
+    "rxjs": "^7.8.1",
+    "webpack-dev-server": "^4.15.1"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.18",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "description": ""
+}
