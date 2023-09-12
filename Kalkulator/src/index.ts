@@ -1,8 +1,85 @@
 
-import {from,  fromEvent,map,switchMap,debounceTime,Observable,of} from 'rxjs';
+import {from,interval,  fromEvent,map,switchMap,debounceTime,Observable,of} from 'rxjs';
 import { Groceries } from './Groceries';
 import * as $ from 'jquery';
 import 'bootstrap';
+//dohvatim image element 
+
+const p=document.getElementById('jegaRadi');
+
+const slikaElement = document.getElementById('slika') as HTMLImageElement;
+const brojeviObservable = interval(2000);
+brojeviObservable
+  .pipe(
+   
+    map( () => {
+      // Ovde možete implementirati logiku za odabir slike na osnovu emitovanog broja
+      // Na primer, ako broj ima određeni značaj, postavite odgovarajuću putanju do slike
+      const randomBroj = Math.floor(Math.random() * 7);
+      console.log(randomBroj);
+      switch (randomBroj) {
+        case 0:
+          return 'slike/oats.png';
+        case 1:
+          return 'slike1/bananas.png';
+          case 2:
+          return 'slike1/pancakes.png';
+        case 3:
+          return 'slike1/potato.png';
+        case 4:
+          return 'slike1/rice.png';
+        case 5:
+          return 'slike1/turkey.png'
+        case 6:
+          return 'slike1/trout.png'
+        case 7:
+          return 'slike1/pizza.png'
+      }
+    })
+  )
+  .subscribe({
+    next: (putanjaDoSlike) => {
+      // Postavite novu putanju do slike u src atribut slike
+      slikaElement.src = putanjaDoSlike;
+    },
+    complete: () => {
+      console.log('Observable je završio emitovanje.');
+    }
+  });
+let tokSlike$:Observable<any>=interval(3000).pipe();
+
+tokSlike$.subscribe(x=>{
+  switch(x)
+  {
+    case 0:
+      return 'slike/calculator.png'
+      
+  }
+})
+let tdePublic:number;
+
+function zatvoriPopup() {
+  const popup = document.getElementById('popup');
+  console.log("uso sam u zsatvori popup");
+  
+  popup.style.display = 'none'; // Sakrijemo pop-up prozor
+}
+
+
+const dugmeOK=document.getElementById("ZatvoriPopup");
+const x=document.getElementById("ZatvoriPopup1");
+
+x.addEventListener('click',()=>
+{
+  zatvoriPopup();
+})
+
+dugmeOK.addEventListener('click',()=>
+{
+  console.log("aaa");
+    zatvoriPopup();
+})
+
 
 const URLAdr="http://localhost:3000/groceries";
  export function getFood(foodName: string): Observable<Groceries> {
@@ -27,27 +104,74 @@ const dugmeObrisiNamirnicu= document.getElementById('dugmeObrisiNamirnicu');
 let namirnicaZaBrisanje:string= "";
 function napraviDugme( )
 {
-   
-   let inputzaIme=document.querySelector('.labelUnos') as HTMLInputElement;
-   let inputZaKolicinu= document.querySelector('.labelGrami') as HTMLInputElement;
-   const prikazProteina= document.querySelector('.prikazProteina');
-   const prikazHidrata= document.querySelector('.prikazHidrata');
-   const prikazMasti= document.querySelector('.prikazMasti');
-   const prikazKalorija= document.querySelector('.prikazKalorija');
 
-  const nextPageButton=document.getElementById('nextPageButton');
+
+
+
+let inputzaIme=document.querySelector('.labelUnos') as HTMLInputElement;
+let inputZaKolicinu= document.querySelector('.labelGrami') as HTMLInputElement;
+let kolicina:number =0;
+let vrednost: string="";
+const prikazProteina= document.querySelector('.prikazProteina');
+const prikazHidrata= document.querySelector('.prikazHidrata');
+const prikazMasti= document.querySelector('.prikazMasti');
+const prikazKalorija= document.querySelector('.prikazKalorija');
+
+const nextPageButton=document.getElementById('nextPageButton');
+
+
+
+
+if (inputzaIme && inputZaKolicinu) {
+ // Pratite promene u inputUnos polju
+ fromEvent(inputzaIme, 'input')
+   .pipe(
+     debounceTime(500), // Odložite obradu događaja unosa za 500ms (polovina sekunde)
+     map((ev) => (ev.target as HTMLInputElement).value.trim()),
+     switchMap((unetaVrednost) => {
+       // Ovde možete da obradite unetu vrednost
+       if (unetaVrednost !== '') {
+         return getFood(unetaVrednost); // Ovo je vaša funkcija za dobijanje podataka na osnovu unete vrednosti
+       } else {
+         return of(null); // Ako je vrednost prazna, vratite null (ili odgovarajuću vrednost)
+       }
+     })
+   )
+   .subscribe((x) => {
+     if (x) {
+       // Ovde možete da ažurirate prikaz na osnovu podataka koje dobijete
+       vrednost= inputzaIme.value;
+       console.log('Podaci:', x);
+     }
+   }, (error) => {
+     console.error('Greška pri dobijanju podataka sa servera:', error);
+   });
+
+ // Pratite promene u inputGrami polju (možete ponoviti sličan postupak)
+}
+
+
+
+
+
+
+
+   
   nextPageButton.addEventListener('click', ()=>
   {
-    const valueToPass= inputzaIme.value;
-    const encodedValue= encodeURIComponent(valueToPass);
+    
+    const inputImeInfo= document.getElementById('infoNamirnica') as HTMLInputElement;
+    const vrednostInputImeInfo=inputImeInfo.value;
+
+    //const valueToPass= inputzaIme.value;
+    const encodedValue= encodeURIComponent(vrednostInputImeInfo);
     window.location.href = `groceries-info.html?value=${encodedValue}`;
   })
    
 
    
   
-   let kolicina:number =0;
-   let vrednost: string="";
+  
 
 
    if(inputzaIme){
@@ -71,6 +195,7 @@ if (inputZaKolicinu) {
           const parsedKolicina = parseInt(unetaKolicina, 10);
           if (!isNaN(parsedKolicina)) {
             kolicina = parsedKolicina;
+           
             console.log(kolicina);
             if(unetaKolicina !=='')
             return getFood(vrednost);
@@ -144,26 +269,49 @@ if (inputZaKolicinu) {
     
 
     const dugmeDodaj = document.getElementById('dugmeDodaj');
-    if (dugmeDodaj) {
-        dugmeDodaj.addEventListener('click', () => {
-          const unos:Groceries = {
-            id: vrednost,
-            name:vrednost,
-            P: parseFloat(prikazProteina.innerHTML),
-            UH: parseFloat(prikazHidrata.innerHTML),
-            M: parseFloat(prikazMasti.innerHTML),
-            Kcal: parseFloat(prikazKalorija.innerHTML),
-            Opis:''
-          };
 
-          console.log("Upisano je! "+ unos.id + unos.P + unos.UH );
-          upisiULocalStorage(unos); // Prosleđivanje objekta unos u funkciju upisiULocalStorage
-          prikaziModal(); // Poziv funkcije za prikazivanje modalnog prozora
-          setTimeout(zatvoriModal, 3000);
-        });
-      } else {
-        console.error('Element sa ID-om "dugmeDodaj" nije pronađen.');
-      }
+    inputImeNamirniceZaBrisanje.addEventListener('input', ()=>
+    {
+        namirnicaZaBrisanje=inputImeNamirniceZaBrisanje.value;
+        
+        console.log(namirnicaZaBrisanje);
+        
+    })
+
+    if (dugmeDodaj) {
+      console.log(`Input za kolicinu : ${inputZaKolicinu.value}`);
+
+      fromEvent(dugmeDodaj, 'click').subscribe(() => {
+         const unos:Groceries= {
+           id: vrednost,
+          name: namirnicaZaBrisanje,
+           P: parseFloat(prikazProteina.innerHTML),
+
+          UH: parseFloat(prikazHidrata.innerHTML),
+          M: parseFloat(prikazMasti.innerHTML),
+          Kcal: parseFloat(prikazKalorija.innerHTML),
+          Opis: '',
+          Gramaza:parseFloat(inputZaKolicinu.value)        
+          };
+         
+    console.log(` Vrednosti koje ce da se upisu u local storage su ${unos}`);
+
+       // console.log("Upisano je! " + unos.id + unos.P + unos.UH);
+       console.log(`Vrednost je : ${vrednost}`);
+       console.log(`Vrednost za gramazu je  je : ${inputZaKolicinu.value}`);
+        if(vrednost!="" && inputZaKolicinu.value!=""){
+        upisiULocalStorage(unos);
+        prikaziModal("uspesno");
+        setTimeout(zatvoriModal, 3000);
+        }
+        else
+        {
+          prikaziModal("neuspesno");
+        }
+      });
+    } else {
+      console.error('Element sa ID-om "dugmeDodaj" nije pronađen.');
+    }
 
       const dugmeProcitaj= document.getElementById('dugmeProcitaj');
 
@@ -209,47 +357,147 @@ if (inputZaKolicinu) {
 
 function upisiULocalStorage(obj:Groceries)
 {
-    console.log(`Pozvana je fja upisiUlocalstorage i vrenodsti obj su 
-        ${obj.P}, ${obj.id}`);
+    console.log(`Pozvana je fja upisiUlocalstorage i vrenodsti objekta su  
+    ${obj.id}   ${obj.name}, ${obj.P} ${obj.UH} ${obj.M} ${obj.Kcal} `);
 
     localStorage.setItem(obj.id, JSON.stringify(obj));
     }
 
 
+    function prvoVelikoSLovo(ime:string):String{
+      return ime.charAt(0).toUpperCase() +ime.slice(1);
+    }
 
 
 
 function procitajIzLocalStorage()
 {
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        console.log(key);
-       
-         const value = localStorage.getItem(key);
-         console.log(value);
-     
-      }
-      
+
+  const popup = document.getElementById('popup');
+const popupNamirnice = document.getElementById('popup-namirnice');
+popupNamirnice.innerHTML = '';
+
+// Inicijalizujemo promenljive za zbir vrednosti
+let zbirProteina = 0;
+let zbirMasti = 0;
+let zbirUgljenihHidrata = 0;
+let zbirKalorija = 0;
+
+// Očekujemo da su podaci u lokalnom skladištu JSON objekti
+for (let i = 0; i < localStorage.length; i++) {
+  const key = localStorage.key(i);
+  const value = localStorage.getItem(key);
+
+ 
+    // Pokušavamo parsirati vrednost kao JSON objekat
+  try {
+    const parsedValue = JSON.parse(value);
+
+    // Izvlačimo samo one atribute koji vas interesuju
+    const interesantniAtributi = {
+      'Proteini': parsedValue.P,
+      'Masti': parsedValue.M,
+      'Ugljeni hidrati': parsedValue.UH,
+      'Kcal': parsedValue.Kcal,
+      'Kolicina': parsedValue.Gramaza + " g"
+    };
+
+    // Kreiramo string sa prikazom ovih atributa
+    let keyPrvoVeliko=prvoVelikoSLovo(key);
+    let prikaz = keyPrvoVeliko + ': ';
+    for (const [nazivAtributa, vrednostAtributa] of Object.entries(interesantniAtributi)) {
+      prikaz += `${nazivAtributa}: ${vrednostAtributa}, `;
+    }
+
+    // Dodajemo prikaz u popupNamirnice
+    popupNamirnice.innerHTML += `<div>${prikaz}</div>`;
+
+    // Dodajemo vrednosti atributa u zbir
+    zbirProteina += interesantniAtributi['Proteini'];
+    zbirMasti += interesantniAtributi['Masti'];
+    zbirUgljenihHidrata += interesantniAtributi['Ugljeni hidrati'];
+    zbirKalorija += interesantniAtributi['Kcal'];
+  } catch (error) {
+    // Ako parsiranje nije uspelo, prikažite originalni ključ i vrednost
+    popupNamirnice.innerHTML += `<div>${key}: ${value}</div>`;
+  }
+}
+
+// Prikazujemo zbir vrednosti na dnu
+popupNamirnice.innerHTML+= '<hr>';
+zbirProteina = parseFloat(zbirProteina.toFixed(2));
+zbirMasti = parseFloat(zbirMasti.toFixed(2));
+zbirUgljenihHidrata = parseFloat(zbirUgljenihHidrata.toFixed(2));
+zbirKalorija = parseFloat(zbirKalorija.toFixed(2));
+
+//popupNamirnice.innerHTML += `<div>Zbir: Proteini: ${zbirProteina}, Masti: ${zbirMasti}, Ugljeni hidrati: ${zbirUgljenihHidrata}, Kcal: ${zbirKalorija}</div>`;
+// Prikazujemo zbir vrednosti na dnu sa stilizacijom za određene delove teksta
+const bmrResults = document.querySelector('.bmr') as HTMLElement;
+popupNamirnice.innerHTML +=`  <span style="color: red;"> Vas TDEE: </span> ${tdePublic}`;
+popupNamirnice.innerHTML += `<div> <span style="color: red;">Proteini:</span> ${zbirProteina}, <span style="color: red;">Masti:</span> ${zbirMasti}, <span style="color: red;">Ugljeni hidrati:</span> ${zbirUgljenihHidrata}, Kcal: ${zbirKalorija}</div>`;
+
+
+popup.style.display = 'block'; 
 }
 
 
-function izbaciNamirnicu(imeNamirnice: string )
+
+
+function izbaciNamirnicu(imeNamirnice: string) :Boolean
 {
     console.log( imeNamirnice);
+    const prethodnaVrednost = localStorage.getItem(imeNamirnice);
     localStorage.removeItem(imeNamirnice);
+
+    if (prethodnaVrednost !== null) {
+      return true;
+    } else {
+      return false;
+    }
 
 }
 
-function prikaziModal() {
+function prikaziModal(flag:String) {
     const modal = document.getElementById('modal');
+    let naslov=document.getElementById('dodavanjeNamirnice');
+    let imeNamirnice=document.getElementById('labelUnos');
+    let imgDodavanje=document.getElementById('slikaDodavanje') as HTMLImageElement;
+    console.log(flag);
+
+    if(flag=="uspesno")
+    {
+      console.log("Usao sam u uspesno");
+      naslov.textContent=`Uspesno ste dodali ${imeNamirnice}`
+      imgDodavanje.src='slike/checked.png';
+    }
+    else
+    {
+      console.log("Usao sam u neuspesno");
+      naslov.textContent=`Naziv namirnice i kolicina su obavezna input polja`;
+      imgDodavanje.src='slike/close.png';
+    }
+
     modal.style.display = 'block';
   }
+
+  const zatvoriDodavanjeNamirnicaBtn=document.getElementById('zatvoriDodavanjeNamirnica');
+  zatvoriDodavanjeNamirnicaBtn.addEventListener('click',()=>
+  {
+    zatvoriModal();
+  })
   
   function zatvoriModal() {
     const modal = document.getElementById('modal');
     modal.style.display = 'none';
   }
   
+  const span=document.getElementById('close');
+  if(span){
+  span.addEventListener('click',()=>
+  {
+    zatvoriModal();
+  })
+}
 
   async function getGroceries()  {
     try {
@@ -261,29 +509,70 @@ function prikaziModal() {
       return [];
     }
 }
+function odstpamajPetar()
+{
+  const tabela=document.getElementById('tabela-namirnica');
+  tabela.addEventListener('click',()=>
+  {
+    console.log("sofiaj!!");
+  })
+}
 
 async function getAndPrintGroceries() {
-    try {
-      const sveNamirnice:Groceries [] = await getGroceries();
-     
-      let nizImena: string[]=[];
-      let i=1;
-      sveNamirnice.map((namirnica) => {
-        nizImena.push(  `${i.toString()}.${namirnica.id} `);
-        i++
-    }
-       );
-      
-      const rezultatDiv = document.getElementById('sveNamirnice');
-      rezultatDiv.innerHTML = nizImena.join('<br>');
+  try {
+    const sveNamirnice: Groceries[] = await getGroceries();
 
-      
+    // Pronađite tabelu u HTML-u
+    const tabela = document.getElementById('tabela-namirnica');
 
-      
-    } catch (error) {
-      console.error('Error fetching and printing groceries:', error);
-    }
+    // Kreirajte zaglavlje tabele
+    const thead = document.createElement('thead');
+    const trHead = document.createElement('tr');
+    trHead.innerHTML = `
+      <th> </>
+      <th>Naziv</th>
+      <th>Proteini (g)</th>
+      <th>Ugljeni hidrati (g)</th>
+      <th>Masti (g)</th>
+      <th>Kcal/100g</th>
+    `;
+    thead.appendChild(trHead);
+    tabela.appendChild(thead);
+
+    // Kreirajte telo tabele
+    const tbody = document.createElement('tbody');
+    sveNamirnice.forEach((namirnica, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td >${index  + 1 +"."}</td>
+       
+        <td>${namirnica.name}</td>
+        <td>${namirnica.P}</td>
+        <td>${namirnica.UH}</td>
+        <td>${namirnica.M}</td>
+        <td>${namirnica.Kcal}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    tabela.appendChild(tbody);
+
+    tbody.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      const tr = target.closest('tr');
+      if (tr) {
+        const nazivNamirnice = tr.getAttribute('data-name');
+        if (nazivNamirnice) {
+          // Pozovite funkciju i prosledite nazivNamirnice kao argument
+          console.log(nazivNamirnice);
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('Error fetching and printing groceries:', error);
   }
+}
+
 
 
  const vratiNamirnice= document.getElementById('dugmeVratiSveNamirnice');
@@ -308,11 +597,62 @@ async function getAndPrintGroceries() {
  if(dugmeObrisiNamirnicu)
       {
         dugmeObrisiNamirnicu.addEventListener('click', ()=>{
-            console.log("pozivamo fju za brisanje namirnice");
-            izbaciNamirnicu(namirnicaZaBrisanje);
+           
+            let daLiJeObrisano= izbaciNamirnicu(namirnicaZaBrisanje);
+            if(daLiJeObrisano==true)
+            prikaziUspesnoBrisanje();
+              else
+              {
+                prikaziNeuspesnoBrisanje();
+              }
+           // setTimeout(zatvoriUspesnoBrisanje,3000);
+
 
         })
       }
+function prikaziUspesnoBrisanje()
+{
+  
+  let uspesnoBrisanje=document.getElementById('uspesnoBrisanje');
+  let slikaZaBrisanje= document.getElementById('slikaZaBrisanje') as HTMLImageElement;
+  let naslov=document.getElementById('BrisanjeNamirniceh3') as  HTMLElement;
+  naslov.textContent=`Obrisali ste namirnicu ${namirnicaZaBrisanje}`;
+  slikaZaBrisanje.src='slike/checked.png';
+  if(uspesnoBrisanje)
+  uspesnoBrisanje.style.display = 'block';
+else
+{
+  console.log("Nije pronadjen ");
+}
+}
+
+function prikaziNeuspesnoBrisanje()
+{
+  let uspesnoBrisanje=document.getElementById('uspesnoBrisanje');
+  let slikaZaBrisanje= document.getElementById('slikaZaBrisanje') as HTMLImageElement;
+  slikaZaBrisanje.src='slike/close.png';
+  let naslov=document.getElementById('BrisanjeNamirniceh3') as  HTMLElement;
+  console.log(`Namirnica za brisanje ima vrednost : ${namirnicaZaBrisanje} `);
+  if(namirnicaZaBrisanje=="" )
+     naslov.textContent=`Unesite naziv namirnice koju zelite da izbacite iz korpe`;
+  else
+     naslov.textContent=`Namirnica ${namirnicaZaBrisanje} se ne nalazi u korpi`;
+
+    if(uspesnoBrisanje)
+  uspesnoBrisanje.style.display = 'block';
+}
+function zatvoriUspesnoBrisanje()
+{
+  let uspesnoBrisanje=document.getElementById('uspesnoBrisanje');
+  uspesnoBrisanje.style.display = 'none';
+}
+
+let dugmeZatvoriUspesnoBrisanje= document.getElementById('zatvoriUspesnoBrisanjeBtn');
+dugmeZatvoriUspesnoBrisanje.addEventListener('click', ()=>
+{
+  zatvoriUspesnoBrisanje();
+})
+
       // Funkcija za prikazivanje/skrivanje sekcije na osnovu stanja radio button-a
       var radio = document.getElementById("hideSectionRadio");
   var section = document.querySelector(".zaPrikaz");
@@ -472,19 +812,19 @@ if (isNaN(age) || weight === undefined) {
 
 function calculateTDEE(bmr:number){
   switch(activity) {
-    case "Sedentary":
+    case "Neaktivan":
       tdee = Math.round(bmr * 1.2)
       break;
-    case "Lightly Active":
+    case "Slabo aktivan":
       tdee = Math.round(bmr * 1.375)
       break;
-    case "Moderately Active":
+    case "Umereno aktivan":
       tdee = Math.round(bmr * 1.55)
       break;
-    case "Very Active":
+      case "Veeoma aktivan":
       tdee = Math.round(bmr * 1.725)
       break;
-    case "Extremely Active":
+    case "Ekstremno aktivan":
       tdee = Math.round(bmr * 1.9)
       break;
   }
@@ -512,14 +852,38 @@ const loading = document.getElementById('loading');
 if (loading) {
   loading.style.display = 'none';
 }
-
+console.log(tdee);
+console.log(bmr);
 // Append results
 if (bmrResults && bmr !== undefined) {
   bmrResults.innerHTML += `  BMR:  ${bmr}`;
 }
 if (tdeeResults && tdee !== undefined) {
   tdeeResults.innerHTML += `  TDEE: ${tdee}`;
+  tdePublic=tdee;
 }
+
+if (tdeeResults && tdee !== undefined) {
+  maintain.innerHTML += ` ${tdee} Calories`;
+}
+
+if (tdeeResults && tdee !== undefined) {
+  lose1Lb.innerHTML += ` ${tdee-500} Calories`;
+}
+
+if (tdeeResults && tdee !== undefined) {
+  lose1HalfLb.innerHTML += ` ${tdee-750} Calories`;
+}
+
+
+if (tdeeResults && tdee !== undefined) {
+  lose2Lbs.innerHTML += ` ${tdee-1000} Calories`;
+}
+
+
+
+
+
 
 // Implement the logic to fill other result fields
 }
@@ -533,12 +897,15 @@ heightIn = parseInt((document.getElementById('height-inch') as HTMLInputElement)
 gender = (document.getElementById('gender') as HTMLSelectElement).value;
 activity = (document.getElementById('activity') as HTMLSelectElement).value;
 breastfeeding = (document.getElementById('breast-feeding') as HTMLSelectElement).value;
+
+console.log(weight);
 }
 
 // Convert weight to kg and height to cm
 function weightHeightConversions(weight: string | undefined, heightFt: number | undefined, heightIn: number | undefined) {
 if (weight !== undefined) {
-  weightInKg =  parseFloat((parseFloat(weight) / 2.2).toFixed(2));
+  weightInKg=parseFloat(weight) ; //=  parseFloat((parseFloat(weight) / 2.2).toFixed(2));
+  console.log(weightInKg);
 }
 if (heightFt !== undefined && heightIn !== undefined) {
   heightToCm = ((heightFt * 12) + heightIn);
@@ -588,7 +955,6 @@ if (error) {
   error.remove();
 }
 }
-
 
 
 

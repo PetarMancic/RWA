@@ -2,6 +2,7 @@
 {
 margin-top: 100px;
 border: 2px solid black;
+margin-bottom: 70px;
 }
 .ObrisiNamirnicu
 {
@@ -100,7 +101,7 @@ border: 2px solid black;
   display: flex; /* Postavite elemente unutar kontejnera kao fleksibilne elemente */
   justify-content: space-between; /* Raspodelite prostor između elemenata */
   padding: 10px; /* Dodajte unutarnji prostor između kontejnera i elemenata */
-  border: 2px solid #020000; /* Dodajte border kontejneru */
+ /* border: 2px solid #020000; Dodajte border kontejneru */
   width:250px;
   height:  200px;
 }
@@ -152,4 +153,95 @@ border: 2px solid black;
   justify-content: center; /* Centriranje po horizontali */
   align-items: center; /* Centriranje po vertikali */
   margin-top: 20px;
+}
+
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+.namirnice
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.popup-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+body {
+  background-image: url('./src/slike1/probaj.jpg');
+  background-size: cover; /* Skalira sliku tako da pokrije celu pozadinu */
+ 
+}
+
+.radioDugmiciDiv
+{
+  /* background-color: antiquewhite; */
+  background-color: transparent;
+}
+
+#TDEE {
+  
+  margin: 100px;
+}
+
+
+.podnaslov
+{
+  color: #b99201;
+  font-size: 28px;
+  text-decoration: none; /* Uklanja podvlačenje */
+}
+
+.podnaslov:hover
+{
+   
+    font-size: 30px; /* Povećava veličinu fonta */
+    text-decoration: underline; /* Dodaje podvlačenje */
+    cursor: pointer; /* Postavlja ikonu kursora na pokazivač */
+  
+}
+
+
+/* Dodajte link ka fontu u stilskom fajlu */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+/* Stil za viticasti naslov */
+.viticasti-naslov {
+    font-family: 'Great Vibes', cursive;
+    font-size: 36px; /* Podesite veličinu fonta po potrebi */
+    color: #333; /* Podesite boju naslova po potrebi */
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+/* Stil za manji naslov */
+.manji-naslov {
+    font-family: 'Open Sans', sans-serif;
+    
 }

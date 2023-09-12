@@ -1,22 +1,116 @@
-<p> Ovo je namirnica</p>
-<p id="receivedValue"></p>
-<script src="./myService.ts"></script>
-
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./groceriesInfo.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
     
-    // Dohvatimo vrednost iz URL parametra
-    const urlParams = new URLSearchParams(window.location.search);
-    const receivedValue = urlParams.get('value');
-    console.log(receivedValue);
-    // Postavimo vrednost u element na stranici
-    const receivedValueElement = document.getElementById('receivedValue');
+    <div class="container-md">
+      
+        <p id="receivedValue"></p>
+        <script src="./groceriesInfo.ts"></script>
+        
+        <div class="grocery-item" style="background-color: rgb(241, 226, 197);">
+            <h2 id="imeNamirnice" style="font-family: sans-serif;"></h2>
+            <p id="naslov"> </p>
+            <textarea id="opis-namirnice" style="font-family: Roboto; font-size: 18px;" name="opis-namirnicee" rows="4" cols="50" ></textarea>
+            <img id="SlikaNamirnice" alt="Grocery Item Image">
 
-    receivedValueElement.textContent = `Preneta vrednost: ${receivedValue}`;
-    myServiceInstance.getFood(receivedValue).subscribe( foodData=>
-    {
-        console.log(foodData);
-    },
-    error=>{
-    console.error(error);
-})
-  </script>
+            <table id="tabela-namirnice"  name="opis-namirnice" class="table table-striped table-bordered">
+                <!-- Ovde će biti generisana tabela -->
+            </table>
+
+
+        </div>
+        
+
+        <script>
+            
+            // Dohvatimo vrednost iz URL parametra
+            const urlParams = new URLSearchParams(window.location.search);
+            const receivedValue = urlParams.get('value');
+            console.log(receivedValue);
+            // Postavimo vrednost u element na stranici
+            const receivedValueElement = document.getElementById('receivedValue');
+        
+            const Naslov=document.getElementById('imeNamirnice');
+            
+
+           // receivedValueElement.textContent = `Preneta vrednost: ${receivedValue}`;
+            console.log("ej")
+            const URLAdr="http://localhost:3002/groceries";
+        
+            
+        
+            const promise = fetch(URLAdr+`/${receivedValue}`)
+               .then(response => {
+                if (!response.ok) {
+                  throw new Error("Food not found!");
+              }
+               return response.json();
+               })
+           
+                promise.then(data=>
+                {
+
+                    const opisArea=document.getElementById('opis-namirnice');
+                    opisArea.readOnly = true;
+                    opisArea.textContent=data.Opis;
+                    const slikaNamirnice=document.getElementById('SlikaNamirnice') 
+                    slikaNamirnice.src=data.Slika;
+                   console.log(data.Masti);
+
+                   Naslov.textContent=data.naziv;
+                   const tabela = document.getElementById('tabela-namirnice');
+                   
+                   
+const thead = document.createElement('thead');
+const trHead = document.createElement('tr');
+trHead.innerHTML = `
+  <th> </th>
+  <th>Naziv</th>
+  <th>Proteini (g)</th>
+  <th>Ugljeni hidrati (g)</th>
+  <th>Masti (g)</th>
+  <th>Kcal/100g</th>
+`;
+thead.appendChild(trHead);
+tabela.appendChild(thead);
+
+const tbody = document.createElement('tbody');
+const tr = document.createElement('tr');
+tr.innerHTML = `
+  <td> </td>
+  <td style="text-align:center">${data.naziv}</td>
+  <td style="text-align:center">${data.Proteini}</td>
+  <td style="text-align:center">${data['Ugljeni hidrati']}</td>
+  <td style="text-align:center">${data.Masti}</td>
+  <td style="text-align:center" >${data.Kalorije}</td>
+`;
+tbody.appendChild(tr);
+tabela.appendChild(tbody);
+
+                                    
+
+                                    
+
+
+                })
+        
+        
+        
+
+
+        
+          </script>
+          
+        
+        </div>
+
+
+</body>
+</html>

@@ -7,5 +7,6 @@ export interface Groceries{
     M: number,
     Kcal: number,
     Opis: string,
+    Gramaza:number
     
 }

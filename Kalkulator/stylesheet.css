@@ -115,3 +115,20 @@ Reddish/Brown Accent = #763626
   padding: 0;
   margin: 0;
   }
+
+
+  .podnaslov
+  {
+    color: #b99201;
+    font-size: 38px;
+    text-decoration: none; /* Uklanja podvlačenje */
+  }
+
+  .podnaslov:hover
+  {
+     
+      font-size: 36px; /* Povećava veličinu fonta */
+      text-decoration: underline; /* Dodaje podvlačenje */
+      cursor: pointer; /* Postavlja ikonu kursora na pokazivač */
+    
+  }

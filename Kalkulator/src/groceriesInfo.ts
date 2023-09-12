@@ -32,4 +32,19 @@ function getFood(foodName:string ) {
       console.error('Error fetching food:', error);
     }
   );
+
+
+  window.addEventListener('DOMContentLoaded', (event) => {
+    // Vaš JavaScript kod ide ovde
+    let paragraf= document.getElementById('jegaRadi');
+    if(paragraf){
+      console.log(" proandjen !");
+    paragraf.innerHTML="bastami";
+    }
+    else
+    {
+      console.log("Nije proandjen !");
+    }
+  });
+  
   
