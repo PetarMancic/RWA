@@ -59,7 +59,35 @@
         "Secer": 0,
         "Kalorije": 120,
         "Slika": "slike1/pirinacNaj.jpeg",
-        "Opis":"Piletina je jedna od najpopularnijih vrsta mesa. Ne samo da je piletina široko dostupna i laka za pripremu, već sadrži širok spektar nutrijenata koji su korisni za vaše zdravlje. Ipak, različiti delovi piletine mogu imati različite nutritivne vrednosti, stoga ćemo se u ovom tekstu osvrnuti na pileća prsa i pileći batak.  "
+        "Opis":"Pirinač je jedna od najvažnijih i najrasprostranjenijih žitarica na svetu. Ova članica porodice Poaceae, botanički poznata kao Oryza sativa ili Oryza glaberrima (u zavisnosti od sorte), ima dugu istoriju gajenja koja seže hiljadama godina unazad. Evo nekoliko ključnih tačaka koje opisuju pirinač: "
       }
+      ,
+      {
+        "id": "voce",
+        "naziv":"Smrznuto voce",
+        "Proteini": 24,
+        "Ugljeni hidrati": 0,
+        "Vlakna": 0,
+        "Masti": 3,
+        "Secer": 0,
+        "Kalorije": 120,
+        "Slika": "slike/smrznutoVoce.jpg",
+        "Opis":"Smrznuto voće je vrsta voća koja je podvrgnuta procesu zamrzavanja kako bi se očuvala njegova svežina, hranljive vrednosti i ukus. Ovaj proces uključuje brzo zamrzavanje voća na niskim temperaturama kako bi se sprečila degradacija voća i rast mikroorganizama.Smrznuto voće je popularan izbor među potrošačima zbog niza prednosti koje nudi. Evo nekoliko ključnih tačaka koje opisuju smrznuto voće  "
+      
+      },
+      {
+        "id": "mleko",
+        "naziv":"Mleko ",
+        "Proteini": 3,
+        "Ugljeni hidrati": 7,
+        "Vlakna": 2,
+        "Masti": 3,
+        "Secer": 12,
+        "Kalorije": 78,
+        "Slika": "slike/mleko.jpg",
+        "Opis":"Smrznuto voće je vrsta voća koja je podvrgnuta procesu zamrzavanja kako bi se očuvala njegova svežina, hranljive vrednosti i ukus. Ovaj proces uključuje brzo zamrzavanje voća na niskim temperaturama kako bi se sprečila degradacija voća i rast mikroorganizama.Smrznuto voće je popularan izbor među potrošačima zbog niza prednosti koje nudi. Evo nekoliko ključnih tačaka koje opisuju smrznuto voće  "
+      
+      }
+
     ]
   }

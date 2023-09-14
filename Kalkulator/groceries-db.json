@@ -16,7 +16,7 @@
     "P": "21",
     "UH": "0",
     "M": "0",
-    "Kcal": 120,
+    "Kcal": 250,
     "Opis": "moj opis"
   },
   {
@@ -25,7 +25,7 @@
     "P": "8",
     "UH": "75",
     "M": "0",
-    "Kcal": 120,
+    "Kcal": 67,
     "Opis": "moj opis"
   }, {
     "id": "banana",
@@ -33,7 +33,7 @@
     "P": "3",
     "UH": "50",
     "M": "0",
-    "Kcal": 120,
+    "Kcal": 88,
     "Opis": "moj opis"
   },
   {
@@ -42,7 +42,7 @@
     "P": "5",
     "UH": "0",
     "M": "30",
-    "Kcal": 120,
+    "Kcal": 97,
     "Opis": "moj opis"
   },
   {
@@ -53,7 +53,27 @@
     "M": "10",
     "Kcal": 169,
     "Opis": "moj opis"
+  },
+  {
+    "id": "mleko",
+    "name": "Mleko",
+    "P": "3.3",
+    "UH": "4.7",
+    "M": "3.8",
+    "Kcal": 64,
+    "Opis": "moj opis"
+  },
+  {
+    "id": "voce",
+    "name": "Smrznuto voce",
+    "P": "1.0",
+    "UH": "7.1",
+    "M": "0.5",
+    "Kcal": 46,
+    "Opis": "moj opis"
   }
+  
+
 ]
  
 }

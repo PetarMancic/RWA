@@ -31,19 +31,20 @@
 
     </head>
     <script src="index.ts"></script>
+  
 
     <body>
     <div class="center-container">
         <div class="radio-buttons-container radioDugmiciDiv">
-          <h2  class="viticasti-naslov" style="color: #b99201;"> Dobrodošli  u  Vaš novi  vodič za kalorije i TDEE analizu.</h2>
-          <h2   class="viticasti-naslov" style="color: #b99201">Kreirajte obroke po vašoj želji. </h2>
+          <h2  class="viticasti-naslov" style="color: white;"> Dobrodošli  u  Vaš novi  vodič za kalorije i TDEE analizu.</h2>
+          <h2   class="viticasti-naslov" style="color: white">Kreirajte obroke po vašoj želji. </h2>
          <div>
-            <label class="podnaslov manji-naslov" style="color:#b99201;display: inline-block; ">
+            <label class="podnaslov manji-naslov" style="color:white;display: inline-block; ">
               <input type="radio" name="hideSection" id="hideSectionRadio" onclick="toggleSection('nutritivneVrednosti')"> Pronađite nutritivne vrednosti namirnica 
           </label>
         </div>
         <div>               
-          <label class="podnaslov manji-naslov" style="color:#b99201;  display: inline-block;">
+          <label class="podnaslov manji-naslov" style="color:white;  display: inline-block;">
               <input type="radio" name="hideSection" id="hideSectionRadioo" onclick="toggleSection('TDEE')"> Izračunajte svoj TDEE
           </label>
         </div>
@@ -52,9 +53,10 @@
         </div>
         </div>
                 
-        <div  class="container d-flex justify-content-center align-items-center" ">
+       
+        <div  class="container d-flex justify-content-center align-items-center"  > 
 
-        <div id="nutritivneVrednosti"class="zaPrikaz  d-justify-content-center align-items-center" style="display:none; background-color:lightblue; width: 90%; height:90%; padding: 20px;">
+        <div id="nutritivneVrednosti"class="zaPrikaz  d-justify-content-center align-items-center" style="display:none; background-color:lightblue; width: 100%; height:100%; padding: 20px; ">
 
         <label for="labelime">Unesite namirnicu   </label>
         <div class="d-flex justify-content-center">
@@ -107,18 +109,20 @@
 
         <div class="d-flex justify-content-center">
         <button id="dugmeObrisiSveIzSveske" class="Dugmici btn btn-primary" >Ocisti celu korpu </button>
-        <button id="obrisiKonzolu" class="Dugmici btn btn-primary"  onclick="dugmeObrisiKonzolu()">Obrisi konzolu </button>
+        
         
         <div id="obrisanaPoruka" > </div>
         
         <button id="dugmeVratiSveNamirnice" class="Dugmici btn btn-primary">Prikazi namirnice </button>
       </div>
         <title>Prikazivanje ID-eva namirnica</title>
-        <div id="sveNamirnice" class="d-flex justify-content-center align-items-center namirnice">
-          <table id="tabela-namirnica" class="table table-striped">
+        <div id="sveNamirnice" class="d-flex justify-content-center align-items-center namirnice" style="margin-top: 20px;">
+          <div >
+          <table id="tabela-namirnica" class="table table-striped" style="margin: 20px;">
               <!-- Ovde će biti generisana tabela -->
           </table>
-          <img id="slika" src="" alt="Slika" style="max-width: 40%; height: 30%;">
+        </div>
+          <img id="slika" src="" alt="Slika" style="max-width: 40%; height: 30%; padding:10px">
       </div>
       
         <br>
@@ -137,15 +141,41 @@
             </div>
           
 
-          <div id="popup" class="popup">
+          <div id="popup" class="popup" >
             <div class="popup-content">
               <span id="ZatvoriPopup1" class="close">&times;</span>
               <div id="popup-namirnice"></div>
               <div class="d-flex justify-content-center align-items-center">
-                <button id="ZatvoriPopup" class="btn btn-primary" style="margin-top: 10px;">Zatvori</button>
+                <button id="ZatvoriPopupBtn" class="btn btn-primary" style="margin-top: 10px;">Zatvori</button>
               </div>
             </div>
           </div>
+
+          <div id="brisanjeSvihNamirnica" class="popup">
+            <div class="popup-content text-center">
+              <h3 id="naslovObrisanenamirnice">Naslov</h3>
+              <img src="slike1/delete-folder.png" style="width: 30%; height: 30%; display: block; margin: 0 auto;">
+            </div>
+          </div>
+          
+          
+
+
+          <div id="moreInfo" class="popup">
+            <div class="popup-content text-center">
+              <h3 id="infoNamirnice"></h3>
+              <div id="popup-namirnice"></div>
+              <div class="d-flex justify-content-center align-items-center">
+                <img src="slike/close.png" alt="Close" style="width: 30%; height: 30%; text-align: center; justify-content: center;">
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <button id="zatvoriMoreInfo" class="btn btn-primary" style="margin-top: 10px;">Zatvori</button>
+              </div>
+            </div>
+          </div>
+          
+
+
 
           <div id="uspesnoBrisanje" class="popup">
             <div class="popup-content d-flex justify-content-center align-items-center" style="flex-direction: column;">
@@ -165,12 +195,30 @@
             <input id="infoNamirnica" class="pure-u-23-24" type="text" style=" width: 50%;">
             <button id="nextPageButton" class="btn btn-primary Dugmici">Detaljnije o namirnici</button>
           </div>
+          <div id="divInfoPage" class="container-md" style="display: none; text-align: center;">
+            <p id="receivedValue"></p>
+          
+            <div class="grocery-item" style="background-color: lightblue; display: inline-block; text-align: left; padding: 20px;">
+              <div class="text-center">
+              <h1 id="imeNamirnice" style="font-family: sans-serif; margin-bottom: 10px;">Naslov</h1>
+              <hr style="width: 50%; margin: 0 auto; border-top: 2px solid #000;">
+            </div>
+              <p id="opis-namirnice" style="font-family: Roboto; font-size: 20px; margin-bottom: 20px;"></p>
+              <div class="d-flex justify-content-center">
+              <img id="SlikaNamirnice" alt="Grocery Item Image" style="max-width: 100%; height: auto;">
+            </div>
+              <table id="tabela-namirnice" name="opis-namirnice" class="table table-striped table-bordered" style="width: 100%; margin-top: 20px;">
+                <!-- Ovde će biti generisana tabela -->
+              </table>
+            </div>
+          </div>
+
+          </div>
+</div>
+
         </div>
         
-          <!-- <div class="d-flex justify-content-center align-items-center flex-column" style="height: 100vh;">
-            <input id="infoNamirnica" class="pure-u-23-24" type="text" style="width: 50%;">
-            <button id="nextPageButton" class="btn btn-primary Dugmici">Otvori Hello World Stranicu</button>
-          </div> -->
+          
           
 
         <script src="../dist/bundle.js" async defer></script>
@@ -231,31 +279,12 @@
             </select>
           </div>
           <div class="pure-u-1 pure-u-sm-1-3">
-            <label for="height">Visina - Feet</label>
-            <select id="height-feet" type="text" value="feet" class="pure-u-23-24">
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
+            <label for="height">Visina - CM</label>
+            <input id="height-feet" type="text"  class="pure-u-23-24">
+             
             </select>
           </div>
-          <div class="pure-u-1 pure-u-sm-1-3">
-            <label for="height">Visina - Inch</label>
-            <select id="height-inch" type="text" class="pure-u-23-24">
-              <option>0</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5</option>
-              <option>6</option>
-              <option>7</option>
-              <option>8</option>
-              <option>9</option>
-              <option>10</option>
-              <option>11</option>
-            </select>
-          </div>
+         
           <div class="pure-u-1 pure-u-sm-1-3">
             <label for="breastFeeding">Da li dojite <i class="far fa-question-circle" data-container="body" data-html="true" data-toggle="popover" data-placement="right" data-content="It is recommended that breast feeding women consume <strong>450 more calories</strong> per day."></i></label>
             <select id="breast-feeding" type="text" class="pure-u-23-24">
@@ -337,8 +366,9 @@
   tippy('.btn');
   </script>
 
-</div>
 
-</div>
+
+
+
     </body>
 </html>
