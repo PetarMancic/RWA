@@ -12,85 +12,13 @@ import { ExportovaneFunkcije, } from './ExportovaneFunkcije';
 import { MakroNutrienti } from './MakroNutrienti';
 import { calculateBMR, getTDE } from './TdeeRacunanje';
 import { getImeNamirnice, nacrtajInfoPage, setImeNamirnice } from './InfoPage';
+//import { nacrtajPrviDiv } from './Namirnice';
 
 
 
+ExportovaneFunkcije.prikaziSlike();
 
 
-const slikaNamirnice = document.getElementById('slika') as HTMLImageElement;
-const brojeviObservable = interval(3000);
-brojeviObservable
-  .pipe(
-    map( () => {
-      
-      const randomBroj = Math.floor(Math.random() * 16);
-      console.log(randomBroj);
-      switch (randomBroj) {
-        case 0:
-          return 'slike/oats.png';
-        case 1:
-          return 'slike1/bananas.png';
-          case 2:
-          return 'slike1/pancakes.png';
-        case 3:
-          return 'slike1/potato.png';
-        case 4:
-          return 'slike1/rice.png';
-        case 5:
-          return 'slike1/turkey.png'
-        case 6:
-          return 'slike1/trout.png'
-        case 7:
-          return 'slike1/pizza.png'
-        case 8:
-             return 'slike2/fast-food.png'
-        case 9:
-             return 'slike2/fish.png'
-        case 10:
-             return 'slike2/hamburger.png'
-        case 11:
-             return 'slike2/honey.png'
-        case 12:
-             return 'slike2/pancakes.png'
-        case 13:
-             return 'slike2/salad.png'
-        case 14:
-             return 'slike2/spaguetti.png'
-        case 15:
-             return 'slike2/steak.png'
-
-      }
-    })
-  )
-  .subscribe({
-    next: (putanjaDoSlike) => {
-      // Postavite novu putanju do slike u src atribut slike
-      slikaNamirnice.src = putanjaDoSlike;
-    },
-    complete: () => {
-      console.log('Observable je završio emitovanje.');
-    }
-  });
-// let tokSlike$:Observable<any>=interval(5000).pipe();
-
-// tokSlike$.subscribe(x=>{
-//   switch(x)
-//   {
-//     case 0:
-//       return 'slike/calculator.png'
-      
-//   }
-// })
-
-// Kude pozivas fje iz onaj index2acili
-//epa na dugme izracunaj 
-//ja u sustini treba samo da pozovem funkicju calculate bmr, ona poziva sve ostalo sto treba
-// Tjt, ali ovo mora jos mng mng da se razbija i instaliraj baj onaj Stipendijasev pretijer
-//cek samo da vidim radi li ovo
-//radi
-//kako jos da sredjujem kod 
-// Nzm ni kvo se desava, ali uvedi slobodno klase i jos iz razbijaj, ce ripi Petko
-//a kazi mi za ovaj html gore, pogle ovo
 
 function zatvoriPopup() {
   const popup = document.getElementById('popup');
@@ -112,32 +40,12 @@ dugmeOK.addEventListener('click',()=>
     zatvoriPopup();
 })
 
- //sad ce ti pokazem na sta se odnosi to 
 
-// const URLAdr="http://localhost:3000/groceries";
-//  export function getFood(foodName: string): Observable<Groceries> {
-//     const promise = fetch(URLAdr + "/" + foodName)
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error("Food not found!");
-//             }
-//             // Prvo pročitajte telo odgovora kao JSON i sačuvajte ga u promenljivu
-//             return response.json();
-//         })
-//         .catch(err => {
-
-//             console.error(err);
-//             throw err;
-//            // return ;
-//         });
-
-//     return from(promise);
-// }
 
 let inputImeNamirniceZaBrisanje=document.getElementById('namirnicaInput') as HTMLInputElement;
 const dugmeObrisiNamirnicu= document.getElementById('dugmeObrisiNamirnicu');
 let namirnicaZaBrisanje:string= "";
-function napraviDugme( )
+function nacrtajMainDiv( )
 {
 
 
@@ -179,7 +87,7 @@ combineLatest([nazivNamirniceObservable, kolicinaObservable]).pipe(
     return from(ExportovaneFunkcije.getFood(nazivNamirnice)).pipe(
       catchError(err => {
         console.error(err);
-        // Ovde možete vratiti neku podrazumevanu vrednost ili EMPTY observable
+        
         return EMPTY;
       }),
       map(foodData => {
@@ -256,8 +164,7 @@ console.log(vrednostInputImeInfo);
             setImeNamirnice(vrednostInputImeInfo); //i ovde treba da pozovemo funkciju koja ce da iscrta sve to 
             nacrtajInfoPage();
               console.log(getImeNamirnice);
-         //   const encodedValue= encodeURIComponent(vrednostInputImeInfo);
-         //  window.location.href = `groceries-info.html?value=${encodedValue}`;
+        
 
           })
           .catch(error=>
@@ -317,16 +224,16 @@ console.log(vrednostInputImeInfo);
     
 
     
+  inputImeNamirniceZaBrisanje.addEventListener('input', ()=>
+  {
+      namirnicaZaBrisanje=inputImeNamirniceZaBrisanje.value;
+      
+      console.log(namirnicaZaBrisanje);
+      
+  })
 
     const dugmeDodaj = document.getElementById('dugmeDodaj');
 
-    inputImeNamirniceZaBrisanje.addEventListener('input', ()=>
-    {
-        namirnicaZaBrisanje=inputImeNamirniceZaBrisanje.value;
-        
-        console.log(namirnicaZaBrisanje);
-        
-    })
 
     if (dugmeDodaj) {
       console.log(`Input za kolicinu : ${inputZaKolicinu.value}`);
@@ -344,24 +251,55 @@ console.log(vrednostInputImeInfo);
           Gramaza:parseFloat(inputZaKolicinu.value)        
           };
          
-    console.log(` Vrednosti koje ce da se upisu u local storage su ${unos}`);
+          
+const URLAadr="http://localhost:3000/groceries";
+const modal = document.getElementById('modal');
+let naslov=document.getElementById('dodavanjeNamirnice');
+let imeNamirnice=document.getElementById('.labelUnos') as HTMLInputElement;
+let imgDodavanje=document.getElementById('slikaDodavanje') as HTMLImageElement;
 
-       // console.log("Upisano je! " + unos.id + unos.P + unos.UH);
-       console.log(`Vrednost je : ${vrednost}`);
-       console.log(`Vrednost za gramazu je  je : ${inputZaKolicinu.value}`);
-        if(vrednost!="" && inputZaKolicinu.value!=""){
-        upisiULocalStorage(unos);
-        prikaziModal("uspesno", vrednost);
-        setTimeout(zatvoriModal, 3000);
+        if(vrednost!="" && inputZaKolicinu.value!="" ){  // ako je korisnik uneo oba input polja 
+
+          const promise = fetch(URLAadr+`/${vrednost}`)
+        .then(response => {
+        if (!response.ok) {
+          throw new Error("Food not found!");
+      }
+        return response.json();
+        })
+        promise.then(data=>
+          {
+            //nalazi se u bazi i onda koristimo cemo da ubacimo u localstorage 
+            upisiULocalStorage(unos);
+            console.log("Usao sam u uspesno");
+            naslov.textContent=`Uspesno ste dodali ${vrednost}`;
+            imgDodavanje.src='slike/checked.png';
+
+           
+           
+            setTimeout(zatvoriModal, 3000);
+        
+
+          })
+          .catch(error=>
+            { //ne nalazi se u bazi 
+
+              naslov.textContent=`Namirnica ${vrednost} se ne nalazi u bazi`;
+              imgDodavanje.src='slike/close.png';
+
+              
+            })
         }
-        else
+        else  // ovo znaci da je polje prazno 
         {
-          prikaziModal("neuspesno", "");
-        }
-      });
-    } else {
-      console.error('Element sa ID-om "dugmeDodaj" nije pronađen.');
-    }
+
+          naslov.textContent=`Input polja ne smeju da budu prazna!`;
+          imgDodavanje.src='slike/close.png';
+        }  
+        //prikazivanje bloka 
+        modal.style.display = 'block';
+    })
+    ;}
 
       const dugmeProcitaj= document.getElementById('dugmeProcitaj');
 
@@ -369,7 +307,7 @@ console.log(vrednostInputImeInfo);
       {
             dugmeProcitaj.addEventListener('click', ()=>
             {
-                procitajIzLocalStorage();
+                ExportovaneFunkcije.procitajIzLocalStorage();
             })
       }
     
@@ -382,40 +320,27 @@ console.log(vrednostInputImeInfo);
                 const obrisanDiv = document.getElementById('obrisanaPoruka');
                
                 if (obrisanDiv) {
-                  obrisanDiv.style.display = 'block'; // Prikazi poruku
+                  obrisanDiv.style.display = 'block'; 
                   setTimeout(() => {
-                    obrisanDiv.style.display = 'none'; // Sakrij poruku nakon nekog vremena (npr. 3 sekunde)
-                  }, 3000); // Promenite 3000 na vrednost koja odgovara dužini prikazivanja poruke (u milisekundama)
+                    obrisanDiv.style.display = 'none';
+                  }, 3000); 
                 }
         })
       }
       
-
       const dugmeObrisiCeluSvesku= document.getElementById('dugmeObrisiSveIzSveske');
       if(dugmeObrisiCeluSvesku)
       {
-        dugmeObrisiCeluSvesku.addEventListener('click', ()=>
-        {
-            const divBrisanjeSvihNamirnica=document.getElementById('brisanjeSvihNamirnica') as HTMLElement;
-           const naslov=document.getElementById('naslovObrisanenamirnice');
-            if(localStorage.length==0)
-            {
-              naslov.textContent="Korpa je vec prazna!"
-            }
-            else
-            {
-            localStorage.clear();
-            naslov.textContent="Namirnice su obrisane!"
-            }
+        console.log("radi")
+        dugmeObrisiCeluSvesku.addEventListener('click', ()=>{
+          ExportovaneFunkcije.ocistiKorpu();
 
-            divBrisanjeSvihNamirnica.style.display='block';
-            setTimeout( ()=>
-            {divBrisanjeSvihNamirnica.style.display='none'} 
-              ,2000)
         })
       }
 
 
+      
+     
 
      
 
@@ -436,75 +361,6 @@ function upisiULocalStorage(obj:Groceries)
 
 
 
-function procitajIzLocalStorage()
-{
-
-  const popup = document.getElementById('popup');
-const popupNamirnice = document.getElementById('popup-namirnice');
-popupNamirnice.innerHTML = '';
-
-let zbirProteina = 0;
-let zbirMasti = 0;
-let zbirUgljenihHidrata = 0;
-let zbirKalorija = 0;
-
-
-for (let i = 0; i < localStorage.length; i++) {
-  const key = localStorage.key(i);
-  const value = localStorage.getItem(key);
-
-
-  try {
-    const parsedValue = JSON.parse(value);
-
-    // Izvlačimo samo one atribute koji vas interesuju
-    const interesantniAtributi = {
-      'Proteini': parsedValue.P,
-      'Masti': parsedValue.M,
-      'Ugljeni hidrati': parsedValue.UH,
-      'Kcal': parsedValue.Kcal,
-      'Kolicina': parsedValue.Gramaza + " g"
-    };
-
-    // Kreiramo string sa prikazom ovih atributa
-    let keyPrvoVeliko=prvoVelikoSLovo(key);
-    let prikaz = keyPrvoVeliko + ': ';
-    for (const [nazivAtributa, vrednostAtributa] of Object.entries(interesantniAtributi)) {
-      prikaz += `${nazivAtributa}: ${vrednostAtributa}, `;
-    }
-
-    // Dodajemo prikaz u popupNamirnice
-    popupNamirnice.innerHTML += `<div>${prikaz}</div>`;
-
-    // Dodajemo vrednosti atributa u zbir
-    zbirProteina += interesantniAtributi['Proteini'];
-    zbirMasti += interesantniAtributi['Masti'];
-    zbirUgljenihHidrata += interesantniAtributi['Ugljeni hidrati'];
-    zbirKalorija += interesantniAtributi['Kcal'];
-  } catch (error) {
-    // Ako parsiranje nije uspelo, prikažite originalni ključ i vrednost
-    popupNamirnice.innerHTML += `<div>${key}: ${value}</div>`;
-  }
-}
-
-// Prikazujemo zbir vrednosti na dnu
-popupNamirnice.innerHTML+= '<hr>';
-zbirProteina = parseFloat(zbirProteina.toFixed(2));
-zbirMasti = parseFloat(zbirMasti.toFixed(2));
-zbirUgljenihHidrata = parseFloat(zbirUgljenihHidrata.toFixed(2));
-zbirKalorija = parseFloat(zbirKalorija.toFixed(2));
-
-
-const bmrResults = document.querySelector('.bmr') as HTMLElement;
-popupNamirnice.innerHTML +=`  <span style="color: red;"> Vas TDEE: </span> ${getTDE()}`;
-popupNamirnice.innerHTML += `<div> <span style="color: red;">Proteini:</span> ${zbirProteina}, <span style="color: red;">Masti:</span> ${zbirMasti}, <span style="color: red;">Ugljeni hidrati:</span> ${zbirUgljenihHidrata}, Kcal: ${zbirKalorija}</div>`;
-// Ovo se desava jednom ili kad se menja tdePublic?
-
-
-
-popup.style.display = 'block'; 
-}
-
 
 
 
@@ -522,29 +378,31 @@ function izbaciNamirnicu(imeNamirnice: string) :Boolean
 
 }
 
-function prikaziModal(flag:String,  naziv:String) {
-    const modal = document.getElementById('modal');
-    let naslov=document.getElementById('dodavanjeNamirnice');
-    let imeNamirnice=document.getElementById('.labelUnos') as HTMLInputElement;
-    let imgDodavanje=document.getElementById('slikaDodavanje') as HTMLImageElement;
-   // console.log(flag);
-      console.log(imeNamirnice);
-    if(flag=="uspesno")
-    {
-      console.log("Usao sam u uspesno");
-      naslov.textContent=`Uspesno ste dodali ${naziv}`
-      imgDodavanje.src='slike/checked.png';
-    }
-    else
-    {
-      console.log(imeNamirnice);
-      console.log("Usao sam u neuspesno");
-      naslov.textContent=`Naziv namirnice i kolicina su obavezna input polja`;
-      imgDodavanje.src='slike/close.png';
-    }
+// function prikaziModal(flag:String,  nazivNamirnice:String, FlagDaLiPostojiUBazi:String) {
+//     const modal = document.getElementById('modal');
+//     let naslov=document.getElementById('dodavanjeNamirnice');
+//     let imeNamirnice=document.getElementById('.labelUnos') as HTMLInputElement;
+//     let imgDodavanje=document.getElementById('slikaDodavanje') as HTMLImageElement;
+//    // console.log(flag);
+//       console.log(imeNamirnice);
+//     if(flag=="uspesno")
+//     {
+//       console.log("Usao sam u uspesno");
+//       naslov.textContent=`Uspesno ste dodali ${nazivNamirnice}`
+//       imgDodavanje.src='slike/checked.png';
+//     }
+//     else
+//     {
+//       console.log(imeNamirnice);
+//       console.log("Usao sam u neuspesno");
+//       naslov.textContent=`Namirnica ${nazivNamirnice} se ne nalazi u bazi`;
+//       imgDodavanje.src='slike/close.png';
+      
+      
+//     }
 
-    modal.style.display = 'block';
-  }
+//     modal.style.display = 'block';
+//   }
 
   const zatvoriDodavanjeNamirnicaBtn=document.getElementById('zatvoriDodavanjeNamirnica');
   zatvoriDodavanjeNamirnicaBtn.addEventListener('click',()=>
@@ -682,47 +540,20 @@ let tabelaNamirnica = false;
            
             let daLiJeObrisano= izbaciNamirnicu(namirnicaZaBrisanje);
             if(daLiJeObrisano==true)
-            prikaziDivUspesnoBrisanje();
+            ExportovaneFunkcije.prikaziDivUspesnoBrisanje();
               else
               {
-                prikaziDivNeuspesnoBrisanje();
+                // prikaziDivNeuspesnoBrisanje();
+                ExportovaneFunkcije.prikaziDivNeuspesnoBrisanje();
               }
            
 
 
         })
       }
-function prikaziDivUspesnoBrisanje()
-{
-  
-  let uspesnoBrisanje=document.getElementById('uspesnoBrisanje');
-  let slikaZaBrisanje= document.getElementById('slikaZaBrisanje') as HTMLImageElement;
-  let naslov=document.getElementById('BrisanjeNamirniceh3') as  HTMLElement;
-  naslov.textContent=`Obrisali ste namirnicu ${namirnicaZaBrisanje}`;
-  slikaZaBrisanje.src='slike/checked.png';
-  if(uspesnoBrisanje)
-  uspesnoBrisanje.style.display = 'block';
-else
-{
-  console.log("Nije pronadjen ");
-}
-}
 
-function prikaziDivNeuspesnoBrisanje()
-{
-  let uspesnoBrisanje=document.getElementById('uspesnoBrisanje');
-  let slikaZaBrisanje= document.getElementById('slikaZaBrisanje') as HTMLImageElement;
-  slikaZaBrisanje.src='slike/close.png';
-  let naslov=document.getElementById('BrisanjeNamirniceh3') as  HTMLElement;
-  console.log(`Namirnica za brisanje ima vrednost : ${namirnicaZaBrisanje} `);
-  if(namirnicaZaBrisanje=="" )
-     naslov.textContent=`Unesite naziv namirnice koju zelite da izbacite iz korpe`;
-  else
-     naslov.textContent=`Namirnica ${namirnicaZaBrisanje} se ne nalazi u korpi`;
 
-    if(uspesnoBrisanje)
-  uspesnoBrisanje.style.display = 'block';
-}
+     
 
 function zatvoriUspesnoBrisanje()
 {
@@ -763,8 +594,7 @@ dugmeZatvoriUspesnoBrisanje.addEventListener('click', ()=>
 
 
 
-napraviDugme();
-
+nacrtajMainDiv();
 
 
 
@@ -780,14 +610,7 @@ if(dugmeIzracunaj)
 
    })
 }
-//kako njega da resimo, tuja promenljivu jer mi treba da setujem na jedno mesto
-// Problem je sto nesmemo da uvezemo inex u index2 jer cemo napraviti kruznu zavisnost, al ce ga opravimo preko nekvutu fju
 
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                //TDE CALCULATOR///////////////
 
 
 
