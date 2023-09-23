@@ -13,17 +13,8 @@ export function setImeNamirnice(value:String)
 
 export function nacrtajInfoPage()
 { 
-    const urlParams = new URLSearchParams(window.location.search);
-const receivedValue = urlParams.get('value');
-console.log(`receiveedValue:${receivedValue}`);
-// Postavimo vrednost u element na stranici
-const receivedValueElement = document.getElementById('receivedValue');
 
 const Naslov=document.getElementById('imeNamirnice');
-
-
-// receivedValueElement.textContent = `Preneta vrednost: ${receivedValue}`;
-console.log("ej")
 const URLAdr="http://localhost:3002/groceries";
 
 
@@ -35,6 +26,9 @@ const promise = fetch(URLAdr+`/${imeNamirnice}`) //bilo je receivedValue
   }
    return response.json();
    })
+
+ 
+
 
     promise.then(data=>
     {

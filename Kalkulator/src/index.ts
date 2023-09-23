@@ -147,7 +147,7 @@ function filterNaN(kolicina:number): String
     const inputImeInfo= document.getElementById('infoNamirnica') as HTMLInputElement;
     const vrednostInputImeInfo=inputImeInfo.value;
 
-console.log(vrednostInputImeInfo);    
+console.log(`Ime namirnice ${vrednostInputImeInfo}`);    
 
     if(vrednostInputImeInfo!=""){  // ako je korisnik nesto uneo
    
@@ -209,6 +209,12 @@ console.log(vrednostInputImeInfo);
     console.error('Element sa ID-om "labelUnos" nije pronađen.');
 }
 
+if(inputZaKolicinu)
+{
+  inputZaKolicinu.addEventListener('input',()=>{
+    console.log(inputZaKolicinu.value);
+  })
+}
 
 
 
@@ -308,6 +314,9 @@ let imgDodavanje=document.getElementById('slikaDodavanje') as HTMLImageElement;
             dugmeProcitaj.addEventListener('click', ()=>
             {
                 ExportovaneFunkcije.procitajIzLocalStorage();
+
+               
+                 
             })
       }
     
@@ -553,6 +562,7 @@ let tabelaNamirnica = false;
       }
 
 
+      
      
 
 function zatvoriUspesnoBrisanje()
@@ -589,8 +599,7 @@ dugmeZatvoriUspesnoBrisanje.addEventListener('click', ()=>
 }
 
 
-  
-
+ 
 
 
 

@@ -1,3 +1,6 @@
+import { fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 // UI Vars
 export let age: number | undefined,
   weight: string | undefined,
@@ -13,12 +16,80 @@ export let age: number | undefined,
   breastfeeding: string | undefined;
 
 let tdePublic = 0;
+let tdePublicKopija=0;
 export function getTDE() {
     return tdePublic;
 }
 
+let gornjaGranicaProteina=0;
+let gornjaGranicaUH=0;
+let gornjaGranicaMasti=0;
+
+export function getGornjaGranicaProteina() : number
+{
+  return gornjaGranicaProteina;
+}
+
+export function setGornjaGranicaProteina(proteini:number)
+{
+    gornjaGranicaProteina=proteini;
+    console.log(`Proteini: ${proteini}`);
+}
+
+
+export function getGornjaGranicaUH() : number
+{
+  return gornjaGranicaUH;
+}
+
+export function setGornjaGranicaUH( UH:number): void 
+{
+  gornjaGranicaUH=UH;
+  console.log(`UH: ${UH}`);
+}
+
+export function getgornjaGranicaMasti() : number
+{
+  return gornjaGranicaMasti;
+}
+
+export function setgornjaGranicaMasti(masti: number) : void
+{
+   gornjaGranicaMasti=masti;
+   console.log(`MASsti: ${masti}`);
+}
+
+export function getKilogrami()
+{
+  return weightInKg;
+}
+
+
+function izracunajGornjeVrednostiNutrienata()
+{
+
+
+
+let localKg=getKilogrami();
+let preostaleKalorijeZaUH=0;
+
+setGornjaGranicaProteina(2*localKg);
+setgornjaGranicaMasti(1*localKg);
+preostaleKalorijeZaUH=tdee-(getGornjaGranicaProteina()*4 + getgornjaGranicaMasti()*9);
+setGornjaGranicaUH(preostaleKalorijeZaUH/4);
+
+
+//sada smo postavili vrednosti 
+
+
+
+}
+
+
+
+
 // Calculate BMR
-export function calculateBMR() {
+export async function calculateBMR() {
 // Get values from form
 getFormValues();
 
@@ -43,7 +114,7 @@ if (isNaN(age) || weight === undefined) {
     } else {
       calculateTDEE(bmr);
     }
-
+    izracunajGornjeVrednostiNutrienata();
     // Show Results
     showResults(bmr, tdee);
   } else {
@@ -53,8 +124,10 @@ if (isNaN(age) || weight === undefined) {
     bmr = Math.round(bmr);
 
     // Calculate TDEE
-    calculateTDEE(bmr);
+     await calculateTDEE(bmr);
 
+     console.log("zavrsio sam calculateTdee i pozivam izracunaj gornje vrednosti nutrienata");
+     izracunajGornjeVrednostiNutrienata();
     // Show Results
     showResults(bmr, tdee);
   }
@@ -62,7 +135,7 @@ if (isNaN(age) || weight === undefined) {
 }
 
 
-export function calculateTDEE(bmr:number){
+export async function calculateTDEE(bmr:number){  //mozda smeta async 
   switch(activity) {
     case "Neaktivan":
       tdee = Math.round(bmr * 1.2)
@@ -80,6 +153,10 @@ export function calculateTDEE(bmr:number){
       tdee = Math.round(bmr * 1.9)
       break;
   }
+
+  //ovde cemo da pozovemo funkciju 
+  console.log("zavrsio sam calculateTdee sada")
+  
 }
 
 export function showResults(bmr: number | undefined, tdee: number | undefined) {
@@ -97,6 +174,10 @@ const maintain = document.querySelector('.maintain');
 const lose1Lb = document.querySelector('.lose-1lb');
 const lose1HalfLb = document.querySelector('.lose-oneandhalflb');
 const lose2Lbs = document.querySelector('.lose-2lb');
+
+const gain1Lb = document.querySelector('.gain-1lb');
+const gain1HalfLb = document.querySelector('.gain-oneandhalflb');
+const gain2Lbs = document.querySelector('.gain-2lb');
 
 
 if (bmrResults) {
@@ -118,6 +199,19 @@ if (lose2Lbs) {
   lose2Lbs.innerHTML = ''; 
 }
 
+
+if (gain1Lb) {
+  gain1Lb.innerHTML = '';  
+}
+if (gain1HalfLb) {
+  gain1HalfLb.innerHTML = ''; 
+}
+if (gain2Lbs) {
+  gain2Lbs.innerHTML = ''; 
+}
+
+
+
 // Hide loader
 const loading = document.getElementById('loading');
 if (loading) {
@@ -132,7 +226,10 @@ if (bmrResults && bmr !== undefined) {
 if (tdeeResults && tdee !== undefined) {
   tdeeResults.innerHTML += `  TDEE: ${tdee}`;
   tdePublic=tdee;
+  tdePublicKopija=tdee;
 }
+
+//gubljenje
 
 if (tdeeResults && tdee !== undefined) {
   maintain.innerHTML += ` ${tdee} Calories`;
@@ -147,8 +244,20 @@ if (tdeeResults && tdee !== undefined) {
 }
 
 
+//dodavanje
 if (tdeeResults && tdee !== undefined) {
   lose2Lbs.innerHTML += ` ${tdee-1000} Calories`;
+}
+
+if (tdeeResults && tdee !== undefined) {
+  gain1Lb.innerHTML += ` ${tdee+500} Calories`;
+}
+
+if (tdeeResults && tdee !== undefined) {
+  gain1HalfLb.innerHTML += ` ${tdee+750} Calories`;
+}
+if (tdeeResults && tdee !== undefined) {
+  lose2Lbs.innerHTML += ` ${tdee+1000} Calories`;
 }
 
 
@@ -223,3 +332,48 @@ if (error) {
   error.remove();
 }
 }
+
+
+const radioButtons = document.querySelectorAll('input[name="opcije"]');
+
+
+const radioChange$ = fromEvent(radioButtons, 'change').pipe(
+  map(event => (event.target as HTMLInputElement).value) // Koristite asertivni operator za tip HTMLInputElement
+);
+
+
+
+let izabranaOpcija = '';
+
+radioChange$.subscribe(izabranaVrednost => {
+  izabranaOpcija = izabranaVrednost;
+  
+  switch (izabranaVrednost) {
+    case 'gubim05':
+     tdePublic=tdePublicKopija-500;
+     break;
+    case 'gubim075':
+      tdePublic=tdePublicKopija-750;
+      break;
+      case'gubim1':
+      tdePublic=tdePublicKopija-1000;
+      break;
+    case 'dodajem05':
+      tdePublic=tdePublicKopija+500;
+      break;
+    case 'dodajem075':
+      tdePublic=tdePublicKopija+750;
+      break;
+    case 'dodajem1':
+      tdePublic=tdePublicKopija+1000;
+      break;
+    case 'odrzavanje':
+      tdePublic=tdePublicKopija;
+      
+    
+
+  }
+
+
+  console.log("Sada je vrednost za tdePublic:", tdePublic);
+});

@@ -1,6 +1,7 @@
-import { Observable, from, interval,map } from "rxjs";
+import { Observable, from, interval,map, fromEvent } from "rxjs";
 import { Groceries } from "./Groceries";
-import { calculateBMR, getTDE } from './TdeeRacunanje';
+
+import { calculateBMR, getGornjaGranicaProteina, getGornjaGranicaUH, getTDE, getgornjaGranicaMasti } from './TdeeRacunanje';
 export class ExportovaneFunkcije{
 
  //URLAdr="http://localhost:3000/groceries";
@@ -166,6 +167,15 @@ export class ExportovaneFunkcije{
         let zbirMasti = 0;
         let zbirUgljenihHidrata = 0;
         let zbirKalorija = 0;
+        let preostaleKalorije: string='';
+        let gornjaGranicaProteina=getGornjaGranicaProteina();
+        console.log("Gornja granica proteina " + gornjaGranicaProteina);
+        let gornjaGranicaUH= getGornjaGranicaUH()
+        let gornjaGranicaMasti= getgornjaGranicaMasti();
+        let preostaliProteini:string='';
+        let preostaliUH:string='';
+        let preostaleMasti:string='';
+
         
         
         for (let i = 0; i < localStorage.length; i++) {
@@ -187,13 +197,17 @@ export class ExportovaneFunkcije{
         
             // Kreiramo string sa prikazom ovih atributa
             let keyPrvoVeliko=this.prvoVelikoSLovo(key);
-            let prikaz = keyPrvoVeliko + ': ';
+            let prikaz = `<span style="font-weight: bold;">${keyPrvoVeliko}</span>: `;
+
             for (const [nazivAtributa, vrednostAtributa] of Object.entries(interesantniAtributi)) {
-              prikaz += `${nazivAtributa}: ${vrednostAtributa}, `;
+              prikaz += `<span style="color: black;"> ${nazivAtributa}:  </span>  <span style="color: green;"> ${vrednostAtributa},  </span>  `;
+
             }
         
             // Dodajemo prikaz u popupNamirnice
             popupNamirnice.innerHTML += `<div>${prikaz}</div>`;
+
+           
         
             // Dodajemo vrednosti atributa u zbir
             zbirProteina += interesantniAtributi['Proteini'];
@@ -207,17 +221,71 @@ export class ExportovaneFunkcije{
         }
         
         // Prikazujemo zbir vrednosti na dnu
-        popupNamirnice.innerHTML+= '<hr>';
+        popupNamirnice.innerHTML+= ` <hr style="width: 100%; margin: 3 auto; border-top: 2px solid black;">`;
+      
         zbirProteina = parseFloat(zbirProteina.toFixed(2));
         zbirMasti = parseFloat(zbirMasti.toFixed(2));
         zbirUgljenihHidrata = parseFloat(zbirUgljenihHidrata.toFixed(2));
         zbirKalorija = parseFloat(zbirKalorija.toFixed(2));
+        preostaleKalorije = (getTDE() - zbirKalorija).toFixed(2);
+
+
+         preostaliProteini= (gornjaGranicaProteina-zbirProteina).toFixed(2);
+         preostaliUH= (gornjaGranicaUH-zbirUgljenihHidrata).toFixed(2);
+         preostaleMasti=(gornjaGranicaMasti-zbirMasti).toFixed(2);
         
         
         const bmrResults = document.querySelector('.bmr') as HTMLElement;
-        popupNamirnice.innerHTML +=`  <span style="color: red;"> Vas TDEE: </span> ${getTDE()}`;
-        popupNamirnice.innerHTML += `<div> <span style="color: red;">Proteini:</span> ${zbirProteina}, <span style="color: red;">Masti:</span> ${zbirMasti}, <span style="color: red;">Ugljeni hidrati:</span> ${zbirUgljenihHidrata}, Kcal: ${zbirKalorija}</div>`;
-        // Ovo se desava jednom ili kad se menja tdePublic?
+        popupNamirnice.innerHTML += '<div style="text-align: right;"> <button class="btn btn-primary" id="dugmenceMoje"> Nacrtaj liniju </button> </div>';
+
+        popupNamirnice.innerHTML +=`   <div style="text-align: center;" > <span style="font-weight: bold;"> Vas TDEE: </span> ${getTDE()} </div>`;
+
+        popupNamirnice.innerHTML +=` <div  style="text-align: center;">   <span style="font-weight: bold;">  Dnevni unos  </span> :   Proteina   <span style="color: green;"> ${gornjaGranicaProteina}g </span>,
+            UH:  <span style="color: green;">  ${gornjaGranicaUH}g </span>,
+            Masti: <span style="color: green;">   ${gornjaGranicaMasti}g  </span>   </div> `
+            ;
+
+            popupNamirnice.innerHTML += `<div >  <br>  </div> `;
+        
+        popupNamirnice.innerHTML +=` <div style="text-align: center;" > <span style="font-weight: bold;">  Do sada ste uneli: </span> </div>`;
+       
+        popupNamirnice.innerHTML += 
+        `<div style="text-align: center;"> 
+        Proteini:  <span style="color:  ${zbirKalorija < getTDE() && zbirProteina<gornjaGranicaProteina ? 'green' : 'red' } ;"> ${zbirProteina}g </span>,
+        Ugljeni hidrati:  <span style="color:  ${zbirKalorija < getTDE()  && zbirUgljenihHidrata<gornjaGranicaUH ? 'green' : 'red' } ;">${zbirUgljenihHidrata}g </span> , 
+        Masti:  <span style="color:  ${zbirKalorija < getTDE()  && zbirMasti<gornjaGranicaMasti ? 'green' : 'red' } ;"> ${zbirMasti}g</span> ,
+        Kcal: <span style="color:  ${zbirKalorija < getTDE() ? 'green' : 'red' } ;">  ${zbirKalorija}</span>  </div>
+        <div style="text-align:center "> <span style="color: red; font-weight: bold;"> ${zbirKalorija > getTDE() ?  'PREKORACILI STE DNEVNI UNOS' : ''}  </div>`;
+
+        popupNamirnice.innerHTML += `<div >  <br>  </div> `;
+
+
+        const preostaliProteiniNumber = parseFloat(preostaliProteini);
+        const preostaliUHNumber= parseFloat(preostaliUH);
+        const preostaliMastiNumber= parseFloat(preostaleMasti);
+
+
+        // Ugljeni hidrati <span style="color: green;">: ${preostaliUH} g   </span> 
+        // Masti <span style="color: green;">: ${preostaleMasti} g  </span> 
+
+
+        popupNamirnice.innerHTML +=` 
+        ${zbirKalorija < getTDE() ? 
+        `<div style="text-align: center;" > <span style="font-weight: bold;">  Da biste zadovoljili dnevni unos potrebno je uneti jos: </span> </div>
+        <div style="text-align: center;" >
+        Proteina <span style="color: ${preostaliProteiniNumber < 0 ? 'red' : 'green'};">${preostaliProteiniNumber} g</span>
+        
+        Ugljeni hidrati <span style="color: ${preostaliUHNumber < 0 ? 'red' : 'green'};">${preostaliUHNumber} g</span>
+        Masti <span style="color: ${preostaliMastiNumber < 0 ? 'red' : 'green'};">${preostaliMastiNumber} g</span>
+
+        Kalorija <span style="color: green;">:  ${preostaleKalorije}  </span> 
+        </div>`
+        : `<div style="text-align: center; ">
+               <img  src="./slike/close.png" alt="Slika" style="width: 100px; height:100px;">
+          </div>`}`;
+
+
+        
         
         
         
@@ -228,4 +296,14 @@ export class ExportovaneFunkcije{
     static   prvoVelikoSLovo(ime:string):String{
         return ime.charAt(0).toUpperCase() +ime.slice(1);
       }
+
+
+    static nacrtajLiniju()
+    {
+      const dugme=document.querySelector('.dugmenceMoje');
+      if(dugme)
+      {
+        console.log("nadjeno");
+      }
+    }
 }
